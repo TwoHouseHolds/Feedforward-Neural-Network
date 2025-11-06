@@ -25,7 +25,7 @@ public class NeuralNetwork implements ClassificationSolver {
     }
 
     // TODO: WRONG FOR FFNs
-    public void train(List<Instance> instances, double alpha) {
+    public void train(List<Instance> instances) {
         for(int epoche = 0; epoche < 20_000; epoche++) {
             for(Instance instance : instances) {
                 double[] inputs = instance.inputs;
@@ -38,7 +38,7 @@ public class NeuralNetwork implements ClassificationSolver {
                     for(Node node : layer.nodes) {
                         double[] weights = node.weights;
                         for(int i = 0; i < weights.length; i++) {
-                            weights[i] = weights[i] + alpha * inputs[i] * delta;
+                            weights[i] = weights[i] + 0.01 * inputs[i] * delta;
                         }
                     }
                 }
