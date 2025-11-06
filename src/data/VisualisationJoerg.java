@@ -1,6 +1,6 @@
 package data;
 
-import prediction.ClassificationSolver;
+import network.ClassificationSolver;
 
 import javax.swing.*;
 import java.awt.*;

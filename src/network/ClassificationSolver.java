@@ -1,4 +1,4 @@
-package prediction;
+package network;
 
 public interface ClassificationSolver {
 

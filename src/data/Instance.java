@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 
 public class Instance {
 
-    double[] inputs;
-    int[] outputs;
+    public double[] inputs;
+    public int[] outputs;
 
     public Instance(double[] inputs, int[] outputs) {
         this.inputs = inputs;

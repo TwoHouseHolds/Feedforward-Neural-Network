@@ -1,13 +1,15 @@
-package graph;
+package network;
 
-public abstract class Layer {
+import math.ActivationFunction;
 
-    Node[] nodes;
+public class Layer {
 
-    public Layer(int nNodes, int nNodeInputs) {
+    public Node[] nodes;
+
+    public Layer(int nNodes, int nNodeInputs, ActivationFunction activationFunction) {
         nodes = new Node[nNodes];
         for (int i = 0; i < nNodes; i++) {
-            nodes[i] = new Node(nNodeInputs);
+            nodes[i] = new Node(nNodeInputs, activationFunction);
         }
     }
 
