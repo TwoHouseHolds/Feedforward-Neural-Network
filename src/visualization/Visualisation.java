@@ -1,6 +1,6 @@
-package data;
+package visualization;
 
-import network.VisualizableClassificationSolver;
+import data.Instance;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +10,7 @@ public class Visualisation {
 
     private static VisualizerPanel panel;
 
-    public static void showGui(VisualizableClassificationSolver solver, List<VisualizableInstance> instances, int step) {
+    public static void showGui(ClassificationSolverVisualizable solver, List<InstanceVisualizable> instances, int step) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,9 +24,9 @@ public class Visualisation {
     }
 
     private static class VisualizerPanel extends JPanel {
-        private final List<VisualizableInstance> instances;
+        private final List<InstanceVisualizable> instances;
         private final int STEP;
-        private VisualizableClassificationSolver solver;
+        private ClassificationSolverVisualizable solver;
 
         private final Color[] defaultBgColors = {
                 new Color(255,200,200),
@@ -44,14 +44,14 @@ public class Visualisation {
 
         private final int SIZE = 500;
 
-        public VisualizerPanel(List<VisualizableInstance> instances, int step, VisualizableClassificationSolver solver, boolean isRefresh) {
+        public VisualizerPanel(List<InstanceVisualizable> instances, int step, ClassificationSolverVisualizable solver, boolean isRefresh) {
             this.instances = instances;
             this.STEP = step;
             this.solver = solver;
             setPreferredSize(new Dimension(SIZE, SIZE));
         }
 
-        public void setSolver(VisualizableClassificationSolver solver) {
+        public void setSolver(ClassificationSolverVisualizable solver) {
             this.solver = solver;
         }
 

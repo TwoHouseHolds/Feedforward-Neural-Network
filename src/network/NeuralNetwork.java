@@ -10,7 +10,7 @@ public class NeuralNetwork {
 
     Layer[] layers; // without input layer
     private static final int N_EPOCHEN = 500;
-    private static final double LEARNING_RATE = 0.09;
+    private static final double LEARNING_RATE_START = 0.09;
 
     public NeuralNetwork(int inputSize, int[] hiddenLayerSizes, int outputSize, ActivationFunction hiddenActivation, ActivationFunction outputActivation, LossFunction lossFunction) {
         layers = new Layer[hiddenLayerSizes.length + 1];
@@ -26,14 +26,14 @@ public class NeuralNetwork {
         layers[layers.length - 1] = new Layer(outputSize, previousLayerSize, outputActivation);
     }
 
-    // TODO: WRONG FOR FFNs
+    // TODO: WRONG FOR FFNs => forward & backward pass (vorher verstehen?)
     public void train(List<? extends Instance> instances) {
-        double dynamicLearningRate = LEARNING_RATE;
-        double learningRateDelta = (LEARNING_RATE / N_EPOCHEN) * 0.9999999999; // so learning rate stays positive
+        double learningRate = LEARNING_RATE_START;
+        // double learningRateDelta = (LEARNING_RATE / N_EPOCHEN) * 0.9999999999; // so learning rate stays positive
         for (int epoche = 0; epoche < N_EPOCHEN; epoche++) {
             for (Instance instance : instances) {
                 double[] inputs = instance.inputs;
-                int prediction = predictClass(inputs)[0]; // TODO
+                int prediction = predictClass(inputs)[0];
                 int actual = instance.outputs[0];
                 int delta = actual - prediction;
 
@@ -42,9 +42,9 @@ public class NeuralNetwork {
                     for (Node node : layer.nodes) {
                         double[] weights = node.weights;
                         for (int i = 0; i < weights.length; i++) {
-                            weights[i] = weights[i] + (dynamicLearningRate * inputs[i] * delta);
+                            weights[i] = weights[i] + (learningRate * inputs[i] * delta);
                         }
-                        node.bias = node.bias + (dynamicLearningRate * delta);
+                        node.bias = node.bias + (learningRate * delta);
                     }
                 }
             }
