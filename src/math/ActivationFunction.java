@@ -7,8 +7,7 @@ public enum ActivationFunction {
     SIGMOID(x -> 1.0 / (1.0 + Math.exp(-x)), x -> {
         double sigmoid = 1.0 / (1.0 + Math.exp(-x));
         return sigmoid * (1 - sigmoid);
-    }),
-    SCHWELLENWERT(x -> (x >= 0 ? 1.0 : 0.0), null);
+    })/*, SCHWELLENWERT(x -> (x >= 0 ? 1.0 : 0.0), null)*/, RELU(x -> Math.max(0.0, x), x -> (x > 0 ? 1.0 : 0.0));
 
     final DoubleFunction<Double> function;
     final DoubleFunction<Double> derivative;

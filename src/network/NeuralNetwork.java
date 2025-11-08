@@ -4,6 +4,7 @@ import data.Instance;
 import math.ActivationFunction;
 import math.LossFunction;
 
+import java.util.Collections;
 import java.util.List;
 
 public class NeuralNetwork {
@@ -24,17 +25,18 @@ public class NeuralNetwork {
         layers[layers.length - 1] = new Layer(outputSize, previousLayerSize, outputActivation, lossFunction, LayerType.OUTPUT);
     }
 
-    public void train(List<? extends Instance> instances, int nEpochen, double learningRateStart) throws Exception {
+    public void train(List<? extends Instance> instances, int nEpochen, double learningRateStart, boolean dynamicLearningRate) throws Exception {
         double learningRate = learningRateStart;
         double learningRateDelta = (learningRateStart / nEpochen);
         for (int epoche = 0; epoche < nEpochen; epoche++) {
+            Collections.shuffle(instances);
             for (Instance instance : instances) {
                 double[] inputs = instance.inputs;
                 forward(inputs);
                 int[] actual = instance.outputs;
                 backwardAndUpdateWnB(actual, learningRate);
             }
-            // learningRate -= learningRateDelta;
+            if(dynamicLearningRate) learningRate -= learningRateDelta;
         }
     }
 

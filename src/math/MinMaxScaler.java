@@ -6,14 +6,7 @@ import java.util.List;
 
 public class MinMaxScaler {
 
-    /**
-     * Applies Min-Max Normalization to the inputs of all instances.
-     * This scales each feature (column) independently to the range [0, 1].
-     * Scaling Formula: X := (X - min) / (max - min)
-     *
-     * @param instances The instances to be scaled.
-     */
-    public static void scaleInputs(List<? extends Instance> instances) {
+    public static MinMaxPair getMinMaxInputs(List<? extends Instance> instances) {
         Instance first = instances.getFirst();
 
         // init
@@ -34,17 +27,31 @@ public class MinMaxScaler {
             }
         }
 
+        return new MinMaxPair(minInputs, maxInputs);
+    }
+
+    /**
+     * Applies Min-Max Normalization to the inputs of all instances.
+     * This scales each feature (column) independently to the range [0, 1].
+     * Scaling Formula: X := (X - min) / (max - min)
+     *
+     * @param instances The instances to be scaled.
+     */
+    public static void scaleInputs(List<? extends Instance> instances, MinMaxPair mmp) {
+        int nInputs = instances.getFirst().inputs.length;
+
         // scale
         for(Instance instance : instances) {
             for(int i = 0; i < nInputs; i++) {
-                double featureRange = maxInputs[i] - minInputs[i];
+                double featureRange = mmp.max[i] - mmp.min[i];
                 if (featureRange == 0) { // avoiding division by 0
                     instance.inputs[i] = 0.0; // typically set to 0
                 } else {
-                    instance.inputs[i] = (instance.inputs[i] - minInputs[i]) / featureRange;
+                    instance.inputs[i] = (instance.inputs[i] - mmp.min[i]) / featureRange;
                 }
             }
         }
     }
 
 }
+

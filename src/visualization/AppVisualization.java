@@ -1,11 +1,10 @@
 package visualization;
 
-import data.Instance;
 import data.LinearDatasetGenerator;
 import math.ActivationFunction;
 import math.LossFunction;
+import math.MinMaxPair;
 import math.MinMaxScaler;
-import network.NeuralNetwork;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,22 +12,26 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: why does this perform worse than the perceptron??? => test w/ perceptron?
+
 public class AppVisualization {
 
-    private static final String CSV_PATH = "./csvs/test1.csv";
+    private static final String CSV_PATH = "./csvs/circle.csv";
+    private static final boolean GENERATE = CSV_PATH == "./csvs/test1.csv";
     private static final String CSV_DELIMITER = ",";
-    private static final boolean GENERATE = true;
     private static final int N_DATA_ROWS = 333;
 
-    private static final int N_EPOCHEN = 500;
-    private static final double LEARNING_RATE_START = 0.09;
+    private static final int[] HIDDEN_LAYER_STRUCTURE = new int[]{10};
+    private static final int N_EPOCHEN = 20_000;
+    private static final double LEARNING_RATE_START = 0.5;
+    private static final boolean DYNAMIC_LEARNING_RATE = true;
 
     public static void main(String[] args) throws Exception {
         if (GENERATE) LinearDatasetGenerator.generateTo(CSV_PATH, N_DATA_ROWS);
 
         List<InstanceVisualizable> vInstances = readFromFileVisualizable();
-        NeuralNetworkVisualizable vnn = new NeuralNetworkVisualizable(new int[]{}, ActivationFunction.SCHWELLENWERT, ActivationFunction.SCHWELLENWERT, LossFunction.MSE);
-        vnn.train(vInstances, N_EPOCHEN, LEARNING_RATE_START);
+        NeuralNetworkVisualizable vnn = new NeuralNetworkVisualizable(HIDDEN_LAYER_STRUCTURE, ActivationFunction.SIGMOID, ActivationFunction.SIGMOID, LossFunction.MSE);
+        vnn.train(vInstances, N_EPOCHEN, LEARNING_RATE_START, DYNAMIC_LEARNING_RATE);
 
         Visualisation.showGui(vnn, vInstances, 1);
     }
@@ -47,7 +50,8 @@ public class AppVisualization {
             vInstances.add(vInstance);
         }
 
-        MinMaxScaler.scaleInputs(vInstances);
+        MinMaxPair mmp = MinMaxScaler.getMinMaxInputs(vInstances);
+        MinMaxScaler.scaleInputs(vInstances, mmp);
         return vInstances;
     }
 

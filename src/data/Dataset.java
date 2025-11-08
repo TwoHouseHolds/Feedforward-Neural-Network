@@ -1,5 +1,6 @@
 package data;
 
+import math.MinMaxPair;
 import math.MinMaxScaler;
 
 import java.io.IOException;
@@ -20,6 +21,9 @@ public class Dataset {
         int split = (int) Math.round(allInstances.size() * trainingPercentage);
         trainingInstances.addAll(allInstances.subList(0, split));
         testingInstances.addAll(allInstances.subList(split, allInstances.size()));
+
+        MinMaxPair mmp = MinMaxScaler.getMinMaxInputs(trainingInstances);
+        MinMaxScaler.scaleInputs(allInstances, mmp);
     }
 
     private static List<Instance> readFromFile(String filePath, String csvDelimiter, int nOutputs) throws IOException {
@@ -45,8 +49,6 @@ public class Dataset {
             Instance instance = new Instance(inputs, outputs);
             instances.add(instance);
         }
-
-        MinMaxScaler.scaleInputs(instances);
         return instances;
     }
 
