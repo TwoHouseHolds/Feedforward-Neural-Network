@@ -14,7 +14,8 @@ public class App {
     private static final int N_OUTPUTS = 1;
     private static final double TRAINING_PERCENTAGE = 0.8;
 
-    private static final int N_EPOCHEN = 500;
+    private static final int[] HIDDEN_LAYER_STRUCTURE = new int[]{};
+    private static final int N_EPOCHEN = 50;
     private static final double LEARNING_RATE_START = 0.09;
 
     public static void main(String[] args) throws Exception {
@@ -22,7 +23,7 @@ public class App {
 
         int inputSize = ds.trainingInstances.getFirst().inputs.length;
         int outputSize = ds.trainingInstances.getFirst().outputs.length;
-        NeuralNetwork nn = new NeuralNetwork(inputSize, new int[]{}, outputSize, ActivationFunction.SIGMOID, ActivationFunction.SIGMOID, LossFunction.MSE);
+        NeuralNetwork nn = new NeuralNetwork(inputSize, HIDDEN_LAYER_STRUCTURE, outputSize, ActivationFunction.SIGMOID, ActivationFunction.SIGMOID, LossFunction.MSE);
         nn.train(ds.trainingInstances, N_EPOCHEN, LEARNING_RATE_START);
 
         double accuracy = testAccuracy(nn, ds.testingInstances);

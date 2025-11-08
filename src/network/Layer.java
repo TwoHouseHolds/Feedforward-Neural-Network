@@ -24,4 +24,9 @@ public class Layer {
         }
         return result.toString();
     }
+
+    public Layer(Node[] nodes) {
+        this.nodes = nodes;
+    }
+
 }

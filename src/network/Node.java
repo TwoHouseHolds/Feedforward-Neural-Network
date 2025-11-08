@@ -16,7 +16,7 @@ public class Node {
     double[] tempInputs;
     double tempNetInput;
     double tempOutput;
-    double tempDelta;
+    public double tempDelta;
 
     public Node(int nInputs, ActivationFunction activationFunction, LossFunction lossFunction, int indexInLayer) {
         weights = new double[nInputs];
@@ -29,12 +29,6 @@ public class Node {
         this.indexInLayer = indexInLayer;
     }
 
-    public Node(double[] weights, double bias, ActivationFunction activationFunction) {
-        this.weights = weights;
-        this.bias = bias;
-        this.activationFunction = activationFunction;
-    }
-
     public double forward(double[] inputs) {
         tempInputs = inputs;
         tempNetInput = netInput(inputs);
@@ -43,16 +37,16 @@ public class Node {
     }
 
     public void backwardOutput(int actual) {
-        tempDelta = activationFunction.applyDerivative(tempNetInput) // g'(z)
-                * lossFunction.applyPartialDerivativeToA(actual, tempOutput); // dE / da
-
+        double gStrichVonZ = activationFunction.applyDerivative(tempNetInput);
+        double dEDurch_da = lossFunction.applyPartialDerivativeToA(actual, tempOutput);
+        tempDelta = gStrichVonZ * dEDurch_da;
     }
 
     public void backwardHidden(Layer layerLPlus1) {
         double sum = 0.0;
-        for (Node previousNode : layerLPlus1.nodes) {
-            sum += previousNode.weights[indexInLayer] // w_k,j
-                    * previousNode.tempDelta;
+        for (Node nodeInLayerLPlus1 : layerLPlus1.nodes) {
+            sum += nodeInLayerLPlus1.weights[this.indexInLayer] // w_k,j
+                    * nodeInLayerLPlus1.tempDelta;
         }
         tempDelta = activationFunction.applyDerivative(tempNetInput) // g'(z)
                 * sum;
@@ -60,9 +54,9 @@ public class Node {
 
     public void updateWeightsAndBias(double learningRate) {
         for(int i = 0; i < weights.length; i++) {
-            weights[i] += learningRate * tempInputs[i] * tempDelta;
+            weights[i] -= learningRate * tempInputs[i] * tempDelta;
         }
-        bias += tempDelta;
+        bias -= learningRate * tempDelta;
     }
 
     public double netInput(double[] inputs) {
@@ -84,4 +78,30 @@ public class Node {
         result.append("], b=").append(String.format(Locale.US, "%.2f", bias)).append(" }");
         return result.toString();
     }
+
+    public Node(double[] weights, double bias, ActivationFunction activationFunction) {
+        this.weights = weights;
+        this.bias = bias;
+        this.activationFunction = activationFunction;
+    }
+
+    public Node(double tempNetInput, double tempOutput, ActivationFunction activationFunction, LossFunction lossFunction) {
+        this.tempNetInput = tempNetInput;
+        this.tempOutput = tempOutput;
+        this.activationFunction = activationFunction;
+        this.lossFunction = lossFunction;
+    }
+
+    public Node(double[] weights, double bias, double tempDelta) {
+        this.weights = weights;
+        this.bias = bias;
+        this.tempDelta = tempDelta;
+    }
+
+    public Node(double tempNetInput, double tempOutput, ActivationFunction activationFunction) {
+        this.tempNetInput = tempNetInput;
+        this.tempOutput = tempOutput;
+        this.activationFunction = activationFunction;
+    }
+
 }

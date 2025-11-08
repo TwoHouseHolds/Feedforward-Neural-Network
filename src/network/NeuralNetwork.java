@@ -24,10 +24,9 @@ public class NeuralNetwork {
         layers[layers.length - 1] = new Layer(outputSize, previousLayerSize, outputActivation, lossFunction, LayerType.OUTPUT);
     }
 
-    // TODO: WRONG FOR FFNs => forward & backward pass (vorher verstehen?)
     public void train(List<? extends Instance> instances, int nEpochen, double learningRateStart) throws Exception {
         double learningRate = learningRateStart;
-        // double learningRateDelta = (LEARNING_RATE / N_EPOCHEN) * 0.9999999999; // so learning rate stays positive
+        double learningRateDelta = (learningRateStart / nEpochen);
         for (int epoche = 0; epoche < nEpochen; epoche++) {
             for (Instance instance : instances) {
                 double[] inputs = instance.inputs;
@@ -35,7 +34,7 @@ public class NeuralNetwork {
                 int[] actual = instance.outputs;
                 backwardAndUpdateWnB(actual, learningRate);
             }
-            // dynamicLearningRate -= learningRateDelta;
+            // learningRate -= learningRateDelta;
         }
     }
 
@@ -57,7 +56,7 @@ public class NeuralNetwork {
             Layer layer = layers[i];
             Node[] nodes = layer.nodes;
             for(int j = 0; j < nodes.length; j++) { // iterate over nodes
-                Node node = nodes[i];
+                Node node = nodes[j];
                 if(layer.type == LayerType.OUTPUT) node.backwardOutput(actual[j]);
                 else if (layer.type == LayerType.HIDDEN) node.backwardHidden(layers[i + 1]);
                 else throw new Exception("Input Layers should not exist!");
