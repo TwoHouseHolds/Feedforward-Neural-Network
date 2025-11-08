@@ -14,4 +14,12 @@ public enum LossFunction {
         this.function = function;
         this.partialDerivativeToA = partialDerivativeToA;
     }
+
+    public double apply(double y, double a) {
+        return function.apply(y, a);
+    }
+
+    public double applyPartialDerivativeToA(double y, double a) {
+        return partialDerivativeToA.apply(y, a);
+    }
 }

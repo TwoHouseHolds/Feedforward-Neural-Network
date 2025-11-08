@@ -20,12 +20,15 @@ public class AppVisualization {
     private static final boolean GENERATE = true;
     private static final int N_DATA_ROWS = 333;
 
+    private static final int N_EPOCHEN = 500;
+    private static final double LEARNING_RATE_START = 0.09;
+
     public static void main(String[] args) throws Exception {
         if (GENERATE) LinearDatasetGenerator.generateTo(CSV_PATH, N_DATA_ROWS);
 
         List<InstanceVisualizable> vInstances = readFromFileVisualizable();
         NeuralNetworkVisualizable vnn = new NeuralNetworkVisualizable(new int[]{}, ActivationFunction.SCHWELLENWERT, ActivationFunction.SCHWELLENWERT, LossFunction.MSE);
-        vnn.train(vInstances);
+        vnn.train(vInstances, N_EPOCHEN, LEARNING_RATE_START);
 
         Visualisation.showGui(vnn, vInstances, 1);
     }

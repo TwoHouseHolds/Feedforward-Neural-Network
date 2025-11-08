@@ -14,35 +14,37 @@ public class App {
     private static final int N_OUTPUTS = 1;
     private static final double TRAINING_PERCENTAGE = 0.8;
 
+    private static final int N_EPOCHEN = 500;
+    private static final double LEARNING_RATE_START = 0.09;
+
     public static void main(String[] args) throws Exception {
         Dataset ds = new Dataset(CSV_PATH, CSV_DELIMITER, N_OUTPUTS, TRAINING_PERCENTAGE);
 
         int inputSize = ds.trainingInstances.getFirst().inputs.length;
         int outputSize = ds.trainingInstances.getFirst().outputs.length;
-        NeuralNetwork nn = new NeuralNetwork(inputSize, new int[]{}, outputSize, ActivationFunction.SCHWELLENWERT, ActivationFunction.SCHWELLENWERT, LossFunction.MSE);
-        nn.train(ds.trainingInstances);
+        NeuralNetwork nn = new NeuralNetwork(inputSize, new int[]{}, outputSize, ActivationFunction.SIGMOID, ActivationFunction.SIGMOID, LossFunction.MSE);
+        nn.train(ds.trainingInstances, N_EPOCHEN, LEARNING_RATE_START);
 
-        System.out.println(testAccuracy(nn, ds.testingInstances));
+        double accuracy = testAccuracy(nn, ds.testingInstances);
+        System.out.printf("Accuracy: %.2f%%%n", accuracy * 100);
     }
 
     private static double testAccuracy(NeuralNetwork nn, List<Instance> testingInstances) {
         int correctPredictions = 0;
-        for(Instance testInstance : testingInstances) {
+        for (Instance testInstance : testingInstances) {
             double[] input = testInstance.inputs;
             int[] output = nn.predictClass(input);
             int[] actual = testInstance.outputs;
 
             boolean correctlyPredicted = true;
-            for(int i = 0; i < output.length; i++) {
-                if(output[i] != actual[i]) {
+            for (int i = 0; i < output.length; i++) {
+                if (output[i] != actual[i]) {
                     correctlyPredicted = false;
                     break;
                 }
             }
-            if(correctlyPredicted) {
-                correctPredictions++;
-                System.out.println(Arrays.toString(output) + " " + Arrays.toString(actual) + " " + correctPredictions);
-            }
+            if (correctlyPredicted) correctPredictions++;
+
         }
         return ((double) correctPredictions) / testingInstances.size();
     }

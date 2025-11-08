@@ -1,16 +1,19 @@
 package network;
 
 import math.ActivationFunction;
+import math.LossFunction;
 
 public class Layer {
 
     public Node[] nodes;
+    LayerType type;
 
-    public Layer(int nNodes, int nNodeInputs, ActivationFunction activationFunction) {
+    public Layer(int nNodes, int nNodeInputs, ActivationFunction activationFunction, LossFunction lossFunction, LayerType type) {
         nodes = new Node[nNodes];
         for (int i = 0; i < nNodes; i++) {
-            nodes[i] = new Node(nNodeInputs, activationFunction);
+            nodes[i] = new Node(nNodeInputs, activationFunction, lossFunction, i);
         }
+        this.type = type;
     }
 
     @Override
