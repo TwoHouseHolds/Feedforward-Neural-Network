@@ -1,18 +1,18 @@
 package data;
 
-import network.ClassificationSolver;
+import network.VisualizableClassificationSolver;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class VisualisationJoerg {
+public class Visualisation {
 
     private static VisualizerPanel panel;
 
-    public static void showGui(ClassificationSolver solver, List<Instance> instances, int step) {
+    public static void showGui(VisualizableClassificationSolver solver, List<VisualizableInstance> instances, int step) {
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Entscheidungskarte");
+            JFrame frame = new JFrame();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             panel = new VisualizerPanel(instances, step, solver, false);
             frame.add(panel);
@@ -24,9 +24,9 @@ public class VisualisationJoerg {
     }
 
     private static class VisualizerPanel extends JPanel {
-        private final List<Instance> instances;
+        private final List<VisualizableInstance> instances;
         private final int STEP;
-        private ClassificationSolver solver;
+        private VisualizableClassificationSolver solver;
 
         private final Color[] defaultBgColors = {
                 new Color(255,200,200),
@@ -44,14 +44,14 @@ public class VisualisationJoerg {
 
         private final int SIZE = 500;
 
-        public VisualizerPanel(List<Instance> instances, int step, ClassificationSolver solver, boolean isRefresh) {
+        public VisualizerPanel(List<VisualizableInstance> instances, int step, VisualizableClassificationSolver solver, boolean isRefresh) {
             this.instances = instances;
             this.STEP = step;
             this.solver = solver;
             setPreferredSize(new Dimension(SIZE, SIZE));
         }
 
-        public void setSolver(ClassificationSolver solver) {
+        public void setSolver(VisualizableClassificationSolver solver) {
             this.solver = solver;
         }
 
@@ -76,7 +76,7 @@ public class VisualisationJoerg {
                     double fx = (double)x * STEP / drawableSize;
                     double fy = (double)y * STEP / drawableSize;
 
-                    int clazz = solver.predictClass(new double[]{fx, fy});
+                    int clazz = solver.predictClassVisualizable(fx, fy);
                     g.setColor(defaultBgColors[clazz % defaultBgColors.length]);
 
                     int px = MARGIN + x * cellSize;

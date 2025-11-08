@@ -13,7 +13,7 @@ public class Node {
     public Node(int nInputs, ActivationFunction activationFunction) {
         weights = new double[nInputs];
         for (int i = 0; i < nInputs; i++) {
-            weights[i] = Math.random();
+            weights[i] = 2 * Math.random() - 1; // [-1,1)
         }
         bias = Math.random();
         this.activationFunction = activationFunction;

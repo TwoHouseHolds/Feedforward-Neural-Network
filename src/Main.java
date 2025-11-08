@@ -1,6 +1,4 @@
 import data.Instance;
-import data.LinearDatasetGenerator;
-import data.VisualisationJoerg;
 import math.ActivationFunction;
 import math.LossFunction;
 import network.NeuralNetwork;
@@ -9,20 +7,18 @@ import java.util.List;
 
 public class Main {
 
-    private static final String CSV_PATH = "./data/test1.csv";
-    private static final int N_DATA_ROWS = 100;
+    private static final String CSV_PATH = "./data/diabetes.csv";
     private static final int N_OUTPUTS = 1;
 
     public static void main(String[] args) throws Exception {
-        LinearDatasetGenerator.generateTo(CSV_PATH, N_DATA_ROWS);
         List<Instance> instances = Instance.readFromFile(CSV_PATH, ",", N_OUTPUTS);
 
         int inputSize = instances.getFirst().inputs.length;
         int outputSize = instances.getFirst().outputs.length;
-        NeuralNetwork nn = new NeuralNetwork(inputSize, new int[]{}, outputSize, ActivationFunction.SIGMOID, ActivationFunction.SIGMOID, LossFunction.MSE);
+        NeuralNetwork nn = new NeuralNetwork(inputSize, new int[]{}, outputSize, ActivationFunction.SCHWELLENWERT, ActivationFunction.SCHWELLENWERT, LossFunction.MSE);
         nn.train(instances);
 
-        VisualisationJoerg.showGui(nn, instances, 2);
+        // TODO: testing
     }
 
 }

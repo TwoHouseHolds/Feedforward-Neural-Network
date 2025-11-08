@@ -6,16 +6,18 @@ import math.LossFunction;
 
 import java.util.List;
 
-public class NeuralNetwork implements ClassificationSolver {
+public class NeuralNetwork {
 
     Layer[] layers; // without input layer
+    private static final int N_EPOCHEN = 500;
+    private static final double LEARNING_RATE = 0.09;
 
     public NeuralNetwork(int inputSize, int[] hiddenLayerSizes, int outputSize, ActivationFunction hiddenActivation, ActivationFunction outputActivation, LossFunction lossFunction) {
         layers = new Layer[hiddenLayerSizes.length + 1];
 
         // hidden layers
         int previousLayerSize = inputSize;
-        for(int i = 0; i < hiddenLayerSizes.length; i++) {
+        for (int i = 0; i < hiddenLayerSizes.length; i++) {
             layers[i] = new Layer(hiddenLayerSizes[i], previousLayerSize, hiddenActivation);
             previousLayerSize = hiddenLayerSizes[i];
         }
@@ -25,29 +27,32 @@ public class NeuralNetwork implements ClassificationSolver {
     }
 
     // TODO: WRONG FOR FFNs
-    public void train(List<Instance> instances) {
-        for(int epoche = 0; epoche < 20_000; epoche++) {
-            for(Instance instance : instances) {
+    public void train(List<? extends Instance> instances) {
+        double dynamicLearningRate = LEARNING_RATE;
+        double learningRateDelta = (LEARNING_RATE / N_EPOCHEN) * 0.9999999999; // so learning rate stays positive
+        for (int epoche = 0; epoche < N_EPOCHEN; epoche++) {
+            for (Instance instance : instances) {
                 double[] inputs = instance.inputs;
-                int prediction = predictClass(inputs);
+                int prediction = predictClass(inputs)[0]; // TODO
                 int actual = instance.outputs[0];
                 int delta = actual - prediction;
 
-                // update weights
-                for(Layer layer : layers) {
-                    for(Node node : layer.nodes) {
+                // update weights AND BIAS
+                for (Layer layer : layers) {
+                    for (Node node : layer.nodes) {
                         double[] weights = node.weights;
-                        for(int i = 0; i < weights.length; i++) {
-                            weights[i] = weights[i] + 0.01 * inputs[i] * delta;
+                        for (int i = 0; i < weights.length; i++) {
+                            weights[i] = weights[i] + (dynamicLearningRate * inputs[i] * delta);
                         }
+                        node.bias = node.bias + (dynamicLearningRate * delta);
                     }
                 }
             }
+            // dynamicLearningRate -= learningRateDelta;
         }
     }
 
-    @Override
-    public int predictClass(double[] inputs) {
+    public int[] predictClass(double[] inputs) {
         double[] previousInputs = inputs;
         for (Layer layer : layers) {
             double[] currentOutputs = new double[layer.nodes.length];
@@ -56,13 +61,17 @@ public class NeuralNetwork implements ClassificationSolver {
             }
             previousInputs = currentOutputs;
         }
-        return previousInputs[0] >= 0.5 ? 1 : 0;
+        int[] result = new int[previousInputs.length];
+        for (int i = 0; i < previousInputs.length; i++) {
+            result[i] = previousInputs[i] >= 0.5 ? 1 : 0;
+        }
+        return result;
     }
 
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        for(Layer l : layers) {
+        for (Layer l : layers) {
             result.append(l.toString()).append("\n");
         }
         return result.toString();

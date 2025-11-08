@@ -47,6 +47,17 @@ public class Instance {
         return instances;
     }
 
+    @Override
+    public String toString() {
+        String formattedInputs = Arrays.stream(inputs)
+                .mapToObj(d -> String.format(Locale.US, "%.2f", d))
+                .collect(Collectors.joining(","));
+        return "Instance{ " +
+                "inputs=[" + formattedInputs + ']' +
+                ", outputs=" + Arrays.toString(outputs) +
+                " }";
+    }
+
     /**
      * Applies Min-Max Normalization to the inputs of all instances.
      * This scales each feature (column) independently to the range [0, 1].
@@ -54,7 +65,7 @@ public class Instance {
      *
      * @param instances The instances to be scaled.
      */
-    private static void minMaxScaleInputs(List<Instance> instances) {
+    protected static void minMaxScaleInputs(List<? extends Instance> instances) {
         Instance first = instances.getFirst();
 
         // init
@@ -86,16 +97,5 @@ public class Instance {
                 }
             }
         }
-    }
-
-    @Override
-    public String toString() {
-        String formattedInputs = Arrays.stream(inputs)
-                .mapToObj(d -> String.format(Locale.US, "%.2f", d))
-                .collect(Collectors.joining(","));
-        return "Instance{ " +
-                "inputs=[" + formattedInputs + ']' +
-                ", outputs=" + Arrays.toString(outputs) +
-                " }";
     }
 }
