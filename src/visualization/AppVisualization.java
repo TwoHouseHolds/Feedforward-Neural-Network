@@ -16,13 +16,13 @@ import java.util.List;
 
 public class AppVisualization {
 
-    private static final String CSV_PATH = "./csvs/circle.csv";
+    private static final String CSV_PATH = "./csvs/xor.csv";
     private static final boolean GENERATE = CSV_PATH == "./csvs/test1.csv";
     private static final String CSV_DELIMITER = ",";
-    private static final int N_DATA_ROWS = 333;
+    private static final int N_DATA_ROWS = 100;
 
     private static final int[] HIDDEN_LAYER_STRUCTURE = new int[]{10};
-    private static final int N_EPOCHEN = 20_000;
+    private static final int N_EPOCHEN = 2000;
     private static final double LEARNING_RATE_START = 0.5;
     private static final boolean DYNAMIC_LEARNING_RATE = true;
 

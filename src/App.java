@@ -15,8 +15,8 @@ public class App {
 
     private static final int[] HIDDEN_LAYER_STRUCTURE = new int[]{};
     private static final int N_EPOCHEN = 50;
-    private static final double LEARNING_RATE_START = 0.09;
-    private static final boolean DYNAMIC_LEARNING_RATE = false;
+    private static final double LEARNING_RATE_START = 0.5;
+    private static final boolean DYNAMIC_LEARNING_RATE = true;
 
     public static void main(String[] args) throws Exception {
         Dataset ds = new Dataset(CSV_PATH, CSV_DELIMITER, N_OUTPUTS, TRAINING_PERCENTAGE);
@@ -45,7 +45,6 @@ public class App {
                 }
             }
             if (correctlyPredicted) correctPredictions++;
-
         }
         return ((double) correctPredictions) / testingInstances.size();
     }
