@@ -9,7 +9,7 @@ import java.util.List;
 
 public class NeuralNetwork {
 
-    Layer[] layers; // without input layer
+    public Layer[] layers; // without input layer
 
     public NeuralNetwork(int inputSize, int[] hiddenLayerSizes, int outputSize, ActivationFunction hiddenActivation, ActivationFunction outputActivation, LossFunction lossFunction) {
         layers = new Layer[hiddenLayerSizes.length + 1];

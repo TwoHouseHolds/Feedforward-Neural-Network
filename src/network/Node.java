@@ -7,7 +7,7 @@ import java.util.Locale;
 
 public class Node {
 
-    double[] weights;
+    public double[] weights;
     double bias;
     ActivationFunction activationFunction;
     LossFunction lossFunction;
@@ -20,9 +20,16 @@ public class Node {
 
     public Node(int nInputs, ActivationFunction activationFunction, LossFunction lossFunction, int indexInLayer) {
         weights = new double[nInputs];
-        for (int i = 0; i < nInputs; i++) {
+
+        /*for (int i = 0; i < nInputs; i++) {
             weights[i] = 2 * Math.random() - 1; // [-1,1)
+        }*/
+        double limit = Math.sqrt(6.0 / (nInputs + 1)); // Xavier Initialization approach
+        for (int i = 0; i < nInputs; i++) {
+            // Random value between [-limit, limit]
+            weights[i] = (Math.random() * 2 - 1) * limit;
         }
+
         bias = Math.random();
         this.activationFunction = activationFunction;
         this.lossFunction = lossFunction;

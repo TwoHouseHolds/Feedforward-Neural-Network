@@ -12,18 +12,16 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: why does this perform worse than the perceptron??? => test w/ perceptron?
-
 public class AppVisualization {
 
-    private static final String CSV_PATH = "./csvs/xor.csv";
+    private static final String CSV_PATH = "./csvs/clusters.csv";
     private static final boolean GENERATE = CSV_PATH == "./csvs/test1.csv";
     private static final String CSV_DELIMITER = ",";
     private static final int N_DATA_ROWS = 100;
 
-    private static final int[] HIDDEN_LAYER_STRUCTURE = new int[]{10};
-    private static final int N_EPOCHEN = 2000;
-    private static final double LEARNING_RATE_START = 0.5;
+    private static final int[] HIDDEN_LAYER_STRUCTURE = new int[]{20, 10};
+    private static final int N_EPOCHEN = 5000;
+    private static final double LEARNING_RATE_START = 0.1;
     private static final boolean DYNAMIC_LEARNING_RATE = true;
 
     public static void main(String[] args) throws Exception {
