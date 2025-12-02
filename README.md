@@ -2,6 +2,8 @@
 
 A custom implementation of a Multi-Layer Perceptron (MLP) built from scratch in pure Java, supporting backpropagation, dynamic learning rates, and decision boundary visualization.
 
+![alt text](/z_readme%20images/image.png)
+
 ## Project Structure
 
 * **Core Network (`network/`)**
@@ -21,8 +23,6 @@ Run `App.main()` to train the network on the `diabetes.csv` dataset. Output: pri
 
 ### 2. Visual Demo
 Run `AppVisualization.main()` to launch the GUI for a visual representation of the FFN's predictions by rendering the decision boundary as a colored background behind the actual data points. The Input-CSV must have the format `x, y, label`.
-
-![alt text](/z_readme%20images/image.png)
 
 ### 3. Lecture Exercises
 Run `LectureExamples.main()` to execute isolated forward/backward pass exercises for debugging or educational purposes.
