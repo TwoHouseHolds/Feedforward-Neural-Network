@@ -37,7 +37,7 @@ public class NeuralNetwork {
                 backward(actual);
                 updateWeightsAndBiases(learningRate);
             }
-            if(dynamicLearningRate) learningRate = Math.max(learningRate - learningRateDelta, learningRateStart * 0.1);;
+            if(dynamicLearningRate) learningRate -= learningRateDelta;
         }
     }
 
