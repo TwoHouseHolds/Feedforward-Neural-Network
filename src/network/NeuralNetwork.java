@@ -34,9 +34,10 @@ public class NeuralNetwork {
                 double[] inputs = instance.inputs;
                 forward(inputs);
                 int[] actual = instance.outputs;
-                backwardAndUpdateWnB(actual, learningRate);
+                backward(actual);
+                updateWeightsAndBiases(learningRate);
             }
-            if(dynamicLearningRate) learningRate -= learningRateDelta;
+            if(dynamicLearningRate) learningRate = Math.max(learningRate - learningRateDelta, learningRateStart * 0.1);;
         }
     }
 
@@ -53,18 +54,22 @@ public class NeuralNetwork {
         return previousOutputs;
     }
 
-    private void backwardAndUpdateWnB(int[] actual, double learningRate) throws Exception {
-        for(int i = layers.length - 1; i >= 0; i--) { // iterate over layers
+    private void backward(int[] actual) {
+        for (int i = layers.length - 1; i >= 0; i--) { // iterate over layers
             Layer layer = layers[i];
             Node[] nodes = layer.nodes;
-            for(int j = 0; j < nodes.length; j++) { // iterate over nodes
+            for (int j = 0; j < nodes.length; j++) { // iterate over nodes
                 Node node = nodes[j];
-                if(layer.type == LayerType.OUTPUT) node.backwardOutput(actual[j]);
+                if (layer.type == LayerType.OUTPUT) node.backwardOutput(actual[j]);
                 else if (layer.type == LayerType.HIDDEN) node.backwardHidden(layers[i + 1]);
-                else throw new Exception("Input Layers should not exist!");
-                node.updateWeightsAndBias(learningRate);
             }
         }
+    }
+
+    private void updateWeightsAndBiases(double learningRate) {
+        for(Layer layer : layers)
+            for (Node node : layer.nodes)
+                node.updateWeightsAndBias(learningRate);
     }
 
     public int[] predictClass(double[] inputs) {

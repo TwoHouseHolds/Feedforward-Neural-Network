@@ -13,9 +13,9 @@ public class App {
     private static final int N_OUTPUTS = 1;
     private static final double TRAINING_PERCENTAGE = 0.8;
 
-    private static final int[] HIDDEN_LAYER_STRUCTURE = new int[]{10, 10};
-    private static final int N_EPOCHEN = 5000;
-    private static final double LEARNING_RATE_START = 0.0003;
+    private static final int[] HIDDEN_LAYER_STRUCTURE = new int[]{16, 8};
+    private static final int N_EPOCHEN = 1000;
+    private static final double LEARNING_RATE_START = 0.001;
     private static final boolean DYNAMIC_LEARNING_RATE = true;
 
     public static void main(String[] args) throws Exception {
