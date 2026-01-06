@@ -31,10 +31,8 @@ public class NeuralNetwork {
         for (int epoche = 0; epoche < nEpochen; epoche++) {
             Collections.shuffle(instances);
             for (Instance instance : instances) {
-                double[] inputs = instance.inputs;
-                forward(inputs);
-                int[] actual = instance.outputs;
-                backward(actual);
+                forward(instance.inputs);
+                backward(instance.outputs);
                 updateWeightsAndBiases(learningRate);
             }
             if(dynamicLearningRate) learningRate -= learningRateDelta;
