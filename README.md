@@ -1,6 +1,6 @@
-# Feedforward Neural Network
+# (Feedforward) Neural Network
 
-A custom implementation of a Multi-Layer Perceptron (MLP) built from scratch in pure Java, supporting backpropagation, dynamic learning rates, and decision boundary visualization.
+A custom implementation of a Feedforward Neural Network (MLP) built from scratch in pure Java, supporting backpropagation, dynamic learning rates, and decision boundary visualization.
 
 ![alt text](/z_readme%20images/image.png)
 
@@ -18,14 +18,14 @@ A custom implementation of a Multi-Layer Perceptron (MLP) built from scratch in 
 
 ## Usage
 
-### 1. Training FFN on Diabetes-Data
-Run `App.main()` to train the network on the `diabetes.csv` dataset. Output: prints the test set accuracy to the console.
-
-### 2. Visual Demo
+### Use Case 1: Visual Demo
 Run `AppVisualization.main()` to launch the GUI for a visual representation of the FFN's predictions by rendering the decision boundary as a colored background behind the actual data points. The Input-CSV must have the format `x, y, label`.
 
-### 3. Lecture Exercises
-Run `LectureExamples.main()` to execute isolated forward/backward pass exercises for debugging or educational purposes.
+### Use Case 2: Training FFN on Diabetes-Data
+Run `App.main()` to train the network on the `diabetes.csv` dataset. Output: prints the test set accuracy to the console.
+
+### Use Case 3: Lecture Exercises
+Run `LectureExamples.main()` to execute isolated forward/backward pass examples for debugging / educational purposes.
 
 ## License/Copyright
 © 2025 Colin Traub
